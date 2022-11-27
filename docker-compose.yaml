@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./firewall_toggle
+    command: gunicorn --bind 0.0.0.0:5000 manage:app 
+    expose:
+      - 5000
+    env_file:
+    - ./firewall_toggle/.env
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80 
+    depends_on:
+      - app
