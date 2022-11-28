@@ -20,13 +20,20 @@ def get_firewall_rules():
 
 
 def toggle_firewall_rule(rule_uuid):
-    url = BASE_URL + f"toggleRule/{rule_uuid}"
+    toggle_url = BASE_URL + f"toggleRule/{rule_uuid}"
+    apply_url = BASE_URL + "apply"
     r = requests.post(
-        url,
+        toggle_url,
         verify=False,
          auth=(API_KEY, API_SECRET)
     )
     if r.status_code == 200:
-        return
+        r = requests.post(
+            apply_url,
+            verify=False,
+            auth=(API_KEY, API_SECRET)
+        )
+        if r.status_code == 200:
+            return
     else:
         raise Exception('api failed to toggle rule')
