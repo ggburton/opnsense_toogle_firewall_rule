@@ -16,11 +16,14 @@ def get_firewall_rules():
         verify=False,
         auth=(API_KEY, API_SECRET),
     )
-    return json.loads(r.text)
+    return json.loads(r.text)["rows"]
 
 
-def toggle_firewall_rule(rule_uuid):
-    toggle_url = BASE_URL + f"toggleRule/{rule_uuid}"
+def change_firewall_rule(rule_uuid, state=None):
+    if state is not None:
+        toggle_url = BASE_URL + f"toggleRule/{rule_uuid}/{state}"
+    else:
+        toggle_url = BASE_URL + f"toggleRule/{rule_uuid}"
     apply_url = BASE_URL + "apply"
     r = requests.post(
         toggle_url,
@@ -36,4 +39,6 @@ def toggle_firewall_rule(rule_uuid):
         if r.status_code == 200:
             return
     else:
+        print(r.status_code)
+        print(r.text)
         raise Exception('api failed to toggle rule')
