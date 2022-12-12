@@ -20,6 +20,6 @@ def index():
 
 @app.route("/toggle/<rule_uuid>")
 def toggle_rule(rule_uuid):
-    toggle_firewall_rule(rule_uuid)
+    change_firewall_rule(rule_uuid)
     return redirect(url_for('index'))
     
